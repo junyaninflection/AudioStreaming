@@ -255,7 +255,14 @@ open class AudioPlayer {
 
     /// Stops the audio playback
     public func stop() {
-        guard playerContext.internalState != .stopped else { return }
+        self.stop(completion: nil)
+    }
+    
+    public func stop(completion: (() -> ())? = nil) {
+        guard playerContext.internalState != .stopped else {
+            completion?()
+            return
+        }
 
         serializationQueue.sync {
             stopEngine(reason: .userAction)
@@ -276,6 +283,7 @@ open class AudioPlayer {
             self.playerContext.entriesLock.unlock()
 
             self.processSource()
+            completion?()
         }
     }
 
@@ -523,7 +531,7 @@ open class AudioPlayer {
         rendererContext.resetBuffers()
         playerContext.setInternalState(to: .stopped)
         playerContext.stopReason.write { $0 = reason }
-        Logger.debug("engine stopped 🛑", category: .generic)
+        Logger.debug("engine stopped %@ 🛑", category: .generic, args: reason.rawValue)
     }
 
     /// Starts the audio player, resetting the buffers if requested

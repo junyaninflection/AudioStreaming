@@ -66,7 +66,7 @@ public enum AudioPlayerState: Equatable {
     case disposed
 }
 
-public enum AudioPlayerStopReason: Equatable {
+public enum AudioPlayerStopReason: String, Equatable {
     case none
     case eof
     case userAction
