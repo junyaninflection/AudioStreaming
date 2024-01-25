@@ -12,6 +12,7 @@ class PlayerControlsViewController: UIViewController {
     private lazy var resumeButton = UIButton()
     private lazy var stopButton = UIButton(type: .custom)
     private lazy var muteButton = UIButton()
+    private lazy var nextButton = UIButton()
 
     private lazy var slider = UISlider()
     private lazy var elapsedPlayTimeLabel = UILabel()
@@ -65,8 +66,16 @@ class PlayerControlsViewController: UIViewController {
         stopButton.setTitleColor(.tertiaryLabel, for: .disabled)
         stopButton.accessibilityIdentifier = "stopButton"
         stopButton.addTarget(self, action: #selector(stop), for: .touchUpInside)
+        
+        nextButton.translatesAutoresizingMaskIntoConstraints = false
+        nextButton.setTitle("Next", for: .normal)
+        nextButton.setTitleColor(.label, for: .normal)
+        nextButton.setTitleColor(.secondaryLabel, for: .highlighted)
+        nextButton.setTitleColor(.tertiaryLabel, for: .disabled)
+        nextButton.accessibilityIdentifier = "stopButton"
+        nextButton.addTarget(self, action: #selector(nextItem), for: .touchUpInside)
 
-        let controlsStackView = UIStackView(arrangedSubviews: [resumeButton, stopButton, muteButton])
+        let controlsStackView = UIStackView(arrangedSubviews: [resumeButton, stopButton, muteButton, nextButton])
         controlsStackView.translatesAutoresizingMaskIntoConstraints = false
         controlsStackView.axis = .horizontal
         controlsStackView.distribution = .fillEqually
@@ -194,6 +203,10 @@ class PlayerControlsViewController: UIViewController {
 
     @objc private func stop() {
         viewModel.stop()
+    }
+    
+    @objc private func nextItem() {
+        viewModel.next()
     }
 
     @objc
