@@ -252,6 +252,24 @@ open class AudioPlayer {
             self?.processSource()
         }
     }
+    
+    /// Stop the current item and look to play the next item in queue.
+    public func next() {
+        guard let playingEntry = playerContext.audioPlayingEntry else {
+            return
+        }
+        
+        if playerContext.internalState != .stopped {
+            self.serializationQueue.sync {
+                stopEngine(reason: .userAction)
+            }
+        }
+        checkRenderWaitingAndNotifyIfNeeded()
+        sourceQueue.async {
+            let nextEntry = self.entriesQueue.dequeue(type: .buffering)
+            self.processFinishPlaying(entry: playingEntry, with: nextEntry)
+        }
+    }
 
     /// Stops the audio playback
     public func stop() {

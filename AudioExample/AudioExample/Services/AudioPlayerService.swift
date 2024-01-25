@@ -65,6 +65,10 @@ final class AudioPlayerService {
         player.stop()
         deactivateAudioSession()
     }
+    
+    func next() {
+        player.next()
+    }
 
     func pause() {
         player.pause()

@@ -52,6 +52,10 @@ final class PlayerControlsViewModel {
         stopDisplayLink(resetLabels: true)
         updateContent?(.updatePauseResumeButton("Pause"))
     }
+    
+    func next() {
+        playerService.next()
+    }
 
     func togglePauseResume() {
         playerService.toggle()
